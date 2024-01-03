@@ -81,3 +81,35 @@ export const removeTask: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
+export const updateTask: RequestHandler = async (req, res, next) => {
+  const errors = validationResult(req);
+
+  try {
+    validationErrorParser(errors);
+
+    // Compare the :id from the request URL (req.params.id; see getTask for an example) with the _id in the request body (req.body._id).
+    // If they're not equal, return a 400 response (just call res.status(400);).
+    if (req.params.id !== req.body._id) {
+      res.status(400);
+    }
+
+    // Use the Model.findByIdAndUpdate() Mongoose function to update the Task in the database with the given ID.
+    const orig = await TaskModel.findByIdAndUpdate(req.body._id, {
+      title: req.body.title,
+      description: req.body.description,
+      isChecked: req.body.isChecked,
+    });
+    if (orig === null) {
+      throw createHttpError(404, "task not found.");
+    }
+
+    const update = await TaskModel.findById(req.body._id);
+    if (update === null) {
+      throw createHttpError(404, "task not found.");
+    }
+    res.status(200).json(update);
+  } catch (error) {
+    next(error);
+  }
+};

@@ -1,0 +1,25 @@
+/* 
+- We need one class for the list title, which uses the heading font. 
+- This works similarly to the title and description classes from TaskItem.
+
+- We need another class for the inner <div>, which is the item container. 
+- Use flexbox again to align its children: column direction, horizontally stretched. 
+- The item container itself should also have width: 100%.
+
+- Finally, we need a class for the outermost list container <div>. This just needs a top margin of 3rem.
+*/
+
+.title {
+  font: var(--font-heading);
+}
+
+.itemContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: stretch;
+}
+
+.top {
+  margin-top: 3rem;
+}
